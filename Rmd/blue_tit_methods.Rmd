@@ -1,0 +1,52 @@
+---
+title: "To what extent is the growth of nestling blue tits (_Cyanistes caeruleus_) influenced by competition with siblings?"
+author:
+  - name: Richard J. Telford
+    email: richard.telford@uib.no
+    affiliation: University of Bergen
+    footnote: Corresponding Author
+address:
+  - code: University of Bergen
+    address: Department of Biological Sciences, University of Bergen and Bjerknes Centre for Climate Research, Post Box 7803, N-5020 Bergen, Norway
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+header-includes:
+   - \usepackage{lineno}
+   - \linenumbers
+   - \usepackage{pdflscape}
+   - \newcommand{\blandscape}{\begin{landscape}}
+   - \newcommand{\elandscape}{\end{landscape}}   
+output:
+  bookdown::pdf_book:
+    number_sections: true
+documentclass: article
+classoption: a4paper
+bibliography: extra/blue_tits2.bib
+csl: extra/elsevier-harvard_rjt.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, include = TRUE, warning = TRUE, message = TRUE, error = TRUE)
+
+#set ggplot theme
+theme_set(theme_bw(base_size = 12))
+options(digits = 2)
+```
+
+# Methods
+
+[@drake]
+
+@drake
+
+
+# Results
+
+```{r}
+ggplot(blue_tit, aes(x = d0_hatch_nest_brood_size, y = day_14_tarsus_length)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+
+
+# References
