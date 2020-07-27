@@ -34,10 +34,14 @@ options(digits = 2)
 
 # Methods
 
-[@drake]
+All analyses were done in R v. `r getRversion()` [@R] and used the packages 
+lme4 v. `r packageVersion("lme4")` [@lme4].
 
-@drake
+R packages drake v. `r packageVersion("drake")` [@drake], 
+bookdown `r packageVersion("bookdown")` [@bookdown1] and
+renv v. `r packageVersion("renv")` [@renv] were used to ensure reproducibility.
 
+Code to replicate all the analyses is archived at [https://github.com/richardjtelford/many_eco_evo](https://github.com/richardjtelford/many_eco_evo).
 
 # Results
 

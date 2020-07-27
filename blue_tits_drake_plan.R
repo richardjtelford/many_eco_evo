@@ -18,7 +18,7 @@ import_plan <- drake_plan(
 manuscript_plan <- drake_plan(
   #add package citations to bib file
   biblio2 = package_citations(
-    packages = c("drake"), 
+    packages = c("drake", "tidyverse", "renv", "bookdown", "lme4"), 
     old_bib = file_in("Rmd/extra/blue_tits.bib"), 
     new_bib = file_out("Rmd/extra/blue_tits2.bib")),
   
