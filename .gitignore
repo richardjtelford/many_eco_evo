@@ -38,3 +38,10 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 .Rproj.user
+
+# drake cache
+.drake/
+
+# output files
+*2.bib
+
