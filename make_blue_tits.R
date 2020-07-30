@@ -3,7 +3,7 @@ library("drake")
 
 
 #Build the right things
-r_make(source = "blue_tits_drake_plan.R")
+r_make(source = "R/blue_tits_drake_plan.R")
 
 drake_failed()
 
@@ -14,6 +14,6 @@ if(length(drake_failed()) == 0){
 
 #view dependency graph
 if(interactive()){
-  #r_vis_drake_graph(source = "blue_tits_drake_plan.R")
-  r_vis_drake_graph(source = "blue_tits_drake_plan.R", targets_only = TRUE)
+  #r_vis_drake_graph(source = "R/blue_tits_drake_plan.R")
+  r_vis_drake_graph(source = "R/blue_tits_drake_plan.R", targets_only = TRUE)
 }
