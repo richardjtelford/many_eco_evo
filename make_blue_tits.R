@@ -13,4 +13,7 @@ if(length(drake_failed()) == 0){
 
 
 #view dependency graph
-r_vis_drake_graph(source = "blue_tits_drake_plan.R", targets_only = TRUE)
+if(interactive()){
+  #r_vis_drake_graph(source = "blue_tits_drake_plan.R")
+  r_vis_drake_graph(source = "blue_tits_drake_plan.R", targets_only = TRUE)
+}

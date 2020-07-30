@@ -12,9 +12,6 @@ date: "`r format(Sys.Date(), '%d %B %Y')`"
 header-includes:
    - \usepackage{lineno}
    - \linenumbers
-   - \usepackage{pdflscape}
-   - \newcommand{\blandscape}{\begin{landscape}}
-   - \newcommand{\elandscape}{\end{landscape}}   
 output:
   bookdown::pdf_book:
     number_sections: true
@@ -27,15 +24,31 @@ csl: extra/elsevier-harvard_rjt.csl
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, include = TRUE, warning = TRUE, message = TRUE, error = TRUE)
 
+knitr::knit_hooks$set(inline = function(x) {
+  knitr:::format_sci(x, 'md')
+})
+
 #set ggplot theme
 theme_set(theme_bw(base_size = 12))
 options(digits = 2)
+
+# loadd
+loadd(treat1_fx)
 ```
 
 # Methods
 
-All analyses were done in R v. `r getRversion()` [@R] and used the packages 
-lme4 v. `r packageVersion("lme4")` [@lme4].
+Data were checked for inconsistencies. One nestling was reassigned to the correct year. 
+Data integrity were checked by examining the distribution of the first (typically only) digit after the decimal point for day 14 tarsus length and mass for each measurer.
+Differences from a uniform distribution were tested for with a chi-squared test.
+
+
+The relationship between fledgling mass and net rearing manipulation was tested with mixed effect models using the `lme4` package v. `r packageVersion("lme4")` [@lme4] in R v. `r getRversion()` [@R].
+The unmanipulated reference broods were used for model selection to determine which co-variables should be included in the model in addition to brood size.
+Variables tested for inclusion were chick sex, hatch year and rear area. Hatch year was treated as a factor.
+In the reference brood models, a unique brood identifier was used as a random effect and AIC was used to select the best performing candidate model. 
+For the manipulated broods, the co-variables selected by the reference model were used together with unique identifiers for both clutch and brood as random effects. 
+This final model was fitted with restricted maximum likelihood, others were fitted with maximum likelihood to allow comparison of the fixed effects. 
 
 R packages drake v. `r packageVersion("drake")` [@drake], 
 bookdown `r packageVersion("bookdown")` [@bookdown1] and
@@ -45,10 +58,43 @@ Code to replicate all the analyses is archived at [https://github.com/richardjte
 
 # Results
 
-```{r}
-ggplot(blue_tit, aes(x = d0_hatch_nest_brood_size, y = day_14_tarsus_length)) + 
-  geom_point() +
-  geom_smooth()
+## Last digits
+
+Measurer 2 had an unexpected distribution of digits after the decimal point for mass (Fig. \@ref(fig:last-digit)), with an excess of zeros and deficit of threes. 
+A chi-squared test find that this distribution is significantly different from a uniform distribution (p = `r readd(last_digit_chi) %>% filter(day14_measurer == 2, variable == "Mass") %>% pull(p.value) %>% signif(1)`).
+
+```{r last-digit, fig.cap = "Distribution of first digit after the decimal point for mass and tarsus length on day 14 by measurer"}
+readd(last_digit_plot)
+```
+
+This pattern is not repeated in the tarsus length data. Its cause is unclear.
+
+## Reference broods
+
+Models for the reference data with brood size together with co-variables sex and year had the lowest AIC \@ref(tab:ref-aic).
+
+```{r ref-aic}
+readd(ref_AIC) %>% 
+  knitr::kable(caption = "Fixed effects and AIC of mixed effect models fitted to reference data.")
+```
+
+
+## Manipulated broods
+
+The effect of an additional nestling on mass at 14 days is `r treat1_fx %>% filter(term == "net_rearing_manipulation") %>% pull(estimate)` $\pm$ `r treat1_fx %>% filter(term == "net_rearing_manipulation") %>% pull(std.error)` g. 
+Table \@ref(tab:fixed-tab) shows effect of the co-variables.
+
+```{r fixed-tab}
+treat1_fx %>%
+  filter(effect == "fixed") %>% 
+  select(-group, -effect) %>% 
+  knitr::kable(caption = "Fixed effects estimates and standard errors")
+```
+
+Analysis of the residuals of this model showed no gross outliers (Fig. \@ref(fig:resid)).
+
+```{r resid, fig.cap="Residuals against fitted values for the final model."}
+plot(readd(treat1))
 ```
 
 
